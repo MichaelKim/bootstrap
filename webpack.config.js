@@ -55,13 +55,39 @@ module.exports = async (_, argv) => {
           }
         },
         {
-          test: /\.scss$/i,
+          test: /\.module\.scss$/i,
           use: [
             isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
             {
               loader: 'css-loader',
               options: {
+                sourceMap: !isDev,
+                url: false,
+                modules: {
+                  localIdentName: isDev
+                    ? '[path][name]__[local]'
+                    : '[contenthash:base64]'
+                }
+              }
+            },
+            {
+              loader: 'sass-loader',
+              options: {
                 sourceMap: !isDev
+              }
+            }
+          ]
+        },
+        {
+          test: /\.scss$/i,
+          exclude: /\.module\.scss$/i,
+          use: [
+            isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
+            {
+              loader: 'css-loader',
+              options: {
+                sourceMap: !isDev,
+                url: false
               }
             },
             {
@@ -98,7 +124,10 @@ module.exports = async (_, argv) => {
       new HtmlWebpackPlugin({
         template: path.resolve('./src/index.html')
       }),
-      new MiniCssExtractPlugin()
+      new MiniCssExtractPlugin({
+        filename: isDev ? '[name].css' : '[name].[contenthash].css',
+        chunkFilename: isDev ? '[id].css' : '[id].[contenthash].css'
+      })
     ],
     resolve: {
       extensions: ['.ts', '.tsx', '.js']

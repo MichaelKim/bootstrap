@@ -10,6 +10,7 @@ A bare bones web app featuring React, TypeScript, Babel, and Webpack.
 - Package with Babel + Webpack
 - JavaScript syntax transforms with [@babel/preset-env](https://babeljs.io/docs/en/babel-preset-env)
 - Automated `index.html` with [html-webpack-plugin](https://github.com/jantimon/html-webpack-plugin)
+- Typed CSS Modules with [typescript-plugin-css-modules](https://github.com/mrmckeb/typescript-plugin-css-modules)
 - Development:
   - Live reloading server using [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
 - Production:

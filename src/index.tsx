@@ -1,7 +1,8 @@
 import { render } from 'react-dom';
+import style from './index.module.scss';
 
 function App() {
-  return <h1>Hello world!</h1>;
+  return <h1 className={style.title}>Hello world!</h1>;
 }
 
 const root = document.getElementById('root');
