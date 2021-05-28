@@ -1,4 +1,4 @@
-import { render } from 'react-dom';
+import { render } from 'preact';
 import style from './index.module.scss';
 
 function App() {

@@ -2,6 +2,7 @@
 
 const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -37,14 +38,17 @@ module.exports = async (_, argv) => {
               presets: [
                 '@babel/preset-env',
                 [
-                  '@babel/preset-react',
+                  '@babel/preset-typescript',
                   {
-                    runtime: 'automatic'
+                    jsxPragma: 'h'
                   }
-                ],
-                '@babel/preset-typescript'
+                ]
               ],
               plugins: [
+                [
+                  '@babel/plugin-transform-react-jsx',
+                  { runtime: 'automatic', importSource: 'preact' }
+                ],
                 [
                   '@babel/plugin-transform-typescript',
                   { allowDeclareFields: true }
@@ -121,6 +125,9 @@ module.exports = async (_, argv) => {
           files: './src/**/*.{ts,tsx}'
         }
       }),
+      new CopyWebpackPlugin({
+        patterns: [{ from: './assets' }]
+      }),
       new HtmlWebpackPlugin({
         template: path.resolve('./src/index.html')
       }),
@@ -130,7 +137,12 @@ module.exports = async (_, argv) => {
       })
     ],
     resolve: {
-      extensions: ['.ts', '.tsx', '.js']
+      extensions: ['.ts', '.tsx', '.js'],
+      alias: {
+        react: 'preact/compat',
+        'react-dom/test-utils': 'preact/test-utils',
+        'react-dom': 'preact/compat'
+      }
     },
     stats: {
       colors: true
@@ -164,7 +176,9 @@ module.exports = async (_, argv) => {
       ]
     };
     config.plugins.push(
-      new CleanWebpackPlugin(),
+      new CleanWebpackPlugin({
+        cleanOnceBeforeBuildPatterns: ['**/*', '!.git/**', '!.static']
+      }),
       new CssoWebpackPlugin(),
       new BundleAnalyzerPlugin()
     );
