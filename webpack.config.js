@@ -48,8 +48,7 @@ module.exports = async (_, argv) => {
                 [
                   '@babel/plugin-transform-typescript',
                   { allowDeclareFields: true }
-                ],
-                '@babel/plugin-proposal-class-properties'
+                ]
               ]
             }
           }
@@ -141,12 +140,10 @@ module.exports = async (_, argv) => {
     config.mode = 'development';
     config.devtool = 'cheap-module-source-map';
     config.devServer = {
-      contentBase: path.resolve('./build'),
+      static: path.resolve('./build'),
       host: 'localhost',
       port: 8080,
-      hot: true,
-      overlay: true,
-      compress: true
+      hot: true
     };
   } else {
     config.mode = 'production';
