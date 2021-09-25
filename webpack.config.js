@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 const path = require('path');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -12,7 +11,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 module.exports = async (_, argv) => {
   const isDev = argv.mode !== 'production';
   console.log(
-    `===================${isDev ? 'DEV' : 'PROD'}========================`
+    `===================${isDev ? 'DEV' : 'PROD'}===================`
   );
 
   const config = {
@@ -22,7 +21,8 @@ module.exports = async (_, argv) => {
     output: {
       path: path.resolve('./build'),
       filename: '[name].js',
-      chunkFilename: '[name].bundle.js'
+      chunkFilename: '[name].bundle.js',
+      clean: true
     },
     target: 'web',
     module: {
@@ -160,11 +160,7 @@ module.exports = async (_, argv) => {
         })
       ]
     };
-    config.plugins.push(
-      new CleanWebpackPlugin(),
-      new CssoWebpackPlugin(),
-      new BundleAnalyzerPlugin()
-    );
+    config.plugins.push(new CssoWebpackPlugin(), new BundleAnalyzerPlugin());
   }
 
   return config;
